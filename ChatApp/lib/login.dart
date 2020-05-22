@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -6,6 +7,18 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  var _auth = FirebaseAuth.instance;
+  void verifyUser(email,password)async{
+    try{
+      AuthResult a = await _auth.signInWithEmailAndPassword(
+        email: email, password: password);
+        if(a!=null){
+          Navigator.pushNamed(context, '/Chats');
+        }
+    }
+    catch(e){print(e);
+    Navigator.pop(context);}
+  }
   String email,password;
   @override
   Widget build(BuildContext context) {
@@ -32,7 +45,7 @@ class _LoginState extends State<Login> {
             ),
             FlatButton(onPressed: (){
               setState(() {
-                
+                verifyUser(email,password);
               });
             }, 
             child: Text("Submit"))
