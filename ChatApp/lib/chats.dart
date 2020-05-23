@@ -21,8 +21,19 @@ class _ChatsState extends State<Chats> {
   Widget build(BuildContext context) {
     getCurrUser();
     return Scaffold(
+      
       appBar: AppBar(
         title: Text(title),
+      ),
+      body: Column(
+        children: <Widget>[
+          FlatButton(
+            onPressed: (){
+              Navigator.pushNamed(context, '/Profile');
+            }, 
+            child: Text("upload Image"),
+          )
+        ],
       ),
     );
   }

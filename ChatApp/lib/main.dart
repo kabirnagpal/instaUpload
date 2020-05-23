@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'login.dart';
 import 'regsiter.dart';
 import 'chats.dart';
+import 'profile.dart';
 void main() {
   runApp(MyApp());
 }
@@ -15,7 +16,8 @@ class MyApp extends StatelessWidget {
     routes: {
     '/Login': (context) => Login(),
     '/Register': (context) =>Register(),
-    '/Chats': (context) =>Chats()
+    '/Chats': (context) =>Chats(),
+    '/Profile': (context)=>Profile()
   },
       title: 'Flutter Demo',
       theme: ThemeData(
