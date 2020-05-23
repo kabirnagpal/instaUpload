@@ -2,8 +2,8 @@ import 'package:ChatApp/regsiter.dart';
 import 'package:flutter/material.dart';
 import 'login.dart';
 import 'regsiter.dart';
-import 'chats.dart';
 import 'profile.dart';
+import 'upload.dart';
 void main() {
   runApp(MyApp());
 }
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
     routes: {
     '/Login': (context) => Login(),
     '/Register': (context) =>Register(),
-    '/Chats': (context) =>Chats(),
+    '/Upload': (context) =>Upload(),
     '/Profile': (context)=>Profile()
   },
       title: 'Flutter Demo',

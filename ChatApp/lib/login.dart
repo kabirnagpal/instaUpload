@@ -13,7 +13,7 @@ class _LoginState extends State<Login> {
       AuthResult a = await _auth.signInWithEmailAndPassword(
         email: email, password: password);
         if(a!=null){
-          Navigator.pushNamed(context, '/Chats');
+          Navigator.pushNamed(context, '/Profile');
         }
     }
     catch(e){print(e);

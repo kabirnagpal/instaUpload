@@ -1,67 +1,38 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Profile extends StatefulWidget {
   @override
   _ProfileState createState() => _ProfileState();
 }
-
 class _ProfileState extends State<Profile> {
-
-File _imageFile;
-
-Future <void>_pickImage(ImageSource source) async{
-  File selected = await ImagePicker.pickImage(source: source);
-  setState(() {
-    _imageFile = selected;
-  });
-}
-
-void _clear(){
-  setState(() {
-    _imageFile=null;
-  });
-}
+  
+  
+  void getCurrUser() async {
+    
+    FirebaseUser user = await _auth.currentUser();
+    setState(() {
+      title = user.email;
+    });
+  }
+  String title = "Welcome";
+  var _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
+    getCurrUser();
     return Scaffold(
-
-      appBar: AppBar(
-        title: Text("Upload Image"), 
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.photo_camera),
-              onPressed: () => _pickImage(ImageSource.camera),
-              ),
-            IconButton(
-              icon: Icon(Icons.photo_album),
-              onPressed: () => _pickImage(ImageSource.gallery),
-              ),
-          ],
-        ),
-      ),
       
-      body: ListView(
+      appBar: AppBar(
+        title: Text(title),
+      ),
+      body: Column(
         children: <Widget>[
-          if (_imageFile != null) ...[
-            Container(
-                padding: EdgeInsets.all(32), child: Image.file(_imageFile)),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                FlatButton(
-                  color: Colors.black,
-                  child: Icon(Icons.refresh),
-                  onPressed: _clear,
-                ),
-              ],
-            ),
-          ]
+          FlatButton(
+            onPressed: (){
+              Navigator.pushNamed(context, '/Upload');
+            }, 
+            child: Text("upload Image"),
+          )
         ],
       ),
     );
