@@ -26,19 +26,15 @@ class _UploadState extends State<Upload> {
   String userEmail;
 var _auth = FirebaseAuth.instance;
 File _imageFile;
-String _uploadedFileURL;
+
 Future uploadFile() async {    
    StorageReference storageReference = FirebaseStorage.instance    
        .ref()    
-       .child('Uploads/'+userEmail.split('.com')[0]);    
+       .child('Profiles/'+userEmail.split('.com')[0]+'.jpeg');    
    StorageUploadTask uploadTask = storageReference.putFile(_imageFile);    
    await uploadTask.onComplete;    
-   print('File Uploaded');    
-   storageReference.getDownloadURL().then((fileURL) {    
-     setState(() {    
-       _uploadedFileURL = fileURL;    
-     });    
-   });    
+   print('File Uploaded');        
+   Navigator.pop(context);
  }  
 
 Future <void>_pickImage(ImageSource source) async{
