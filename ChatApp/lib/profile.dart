@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'Posts.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -11,6 +12,19 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
 
   Image _userImage = Image.asset('images/user.png');
+
+  // void getPosts() async{
+  //   ele = [ Text("No more to show") ];
+  //   var _cloud = Firestore.instance;
+  //   await for( var snapshot in _cloud.collection('Posts').document(title).collection('UserPosts').snapshots()){
+  //     for( var docs in snapshot.documents)
+  //       setState((){
+  //         addListEle();
+  //       });
+        
+  //   }
+  //   print(ele);
+  // }
 
   void trytogetImage() async{
     try{
@@ -33,10 +47,13 @@ class _ProfileState extends State<Profile> {
       title = user.email;
     });
   }
+  
+  var _cloud = Firestore.instance;
 
   @override
   void initState() {
     getCurrUser();
+    // getPosts();
     super.initState();    
   }
 
@@ -56,7 +73,7 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     
     trytogetImage();
-
+    // getPosts();
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -92,19 +109,49 @@ class _ProfileState extends State<Profile> {
               textScaleFactor: 3,
             )
           ),
+          // Expanded(
+          //   flex:7,
+          //   child: ListView.builder(
+          //     itemCount: ele.length,
+          //     itemBuilder: (BuildContext context,int index){
+          //       return Container(child: ele[index]);
+          //     }
+          //   ),
+          // ),
           Expanded(
-            flex:7,
-            child: ListView.builder(
-              itemCount: ele.length,
-              itemBuilder: (BuildContext context,int index){
-                return Container(child: ele[index]);
+            flex: 7,
+            child: StreamBuilder(
+              stream: _cloud.collection('Posts').document(title).collection('UserPosts').snapshots(),
+              builder: (context,snapshot){
+                if(snapshot.hasData){
+                  return ListView.builder(
+                    itemCount: snapshot.data.documents.length,
+                    itemBuilder: (BuildContext context,int index){
+                      return Container(child: ListElements(
+                        url: snapshot.data.documents[index].data['url'].toString(),
+                        caption: snapshot.data.documents[index].data['caption'].toString(),
+                        ));
+                    }
+                  );
+                }
+                else{
+                  return Container(
+                    child: Text("Make your first post"),
+                  );
+                }
               }
             ),
           ),
           FloatingActionButton(
             child: Icon(Icons.add_a_photo),
-            onPressed: addListEle,
-            
+            onPressed: (){
+              setState(() {
+                Navigator.pushNamed(context, '/UploadPost');
+                //getPosts();
+                addListEle();
+              });
+              
+            }
           )
         ],
       ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ListElements extends StatefulWidget {
+  String url,caption;
+  ListElements({this.url,this.caption});
   @override
   _ListElementsState createState() => _ListElementsState();
 }
@@ -13,10 +15,10 @@ class _ListElementsState extends State<ListElements> {
         children: <Widget>[
           Container(
             width: 250,
-            child: Image.asset('images/user.png'),
+            child: Image.network(widget.url),
           ),
           Text(
-            "Captions",
+            widget.caption,
             textScaleFactor: 2,
           ),
           SizedBox(

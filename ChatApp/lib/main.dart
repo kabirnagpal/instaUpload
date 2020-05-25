@@ -1,9 +1,11 @@
 import 'package:ChatApp/regsiter.dart';
+import 'package:ChatApp/upload_post.dart';
 import 'package:flutter/material.dart';
 import 'login.dart';
 import 'regsiter.dart';
 import 'profile.dart';
 import 'upload.dart';
+import 'upload_post.dart';
 void main() {
   runApp(MyApp());
 }
@@ -17,7 +19,8 @@ class MyApp extends StatelessWidget {
     '/Login': (context) => Login(),
     '/Register': (context) =>Register(),
     '/Upload': (context) =>Upload(),
-    '/Profile': (context)=>Profile()
+    '/Profile': (context)=>Profile(),
+    '/UploadPost':(context)=>UploadPost()
   },
       title: 'Flutter Demo',
       theme: ThemeData(
