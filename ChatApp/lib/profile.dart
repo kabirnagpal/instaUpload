@@ -13,19 +13,6 @@ class _ProfileState extends State<Profile> {
 
   Image _userImage = Image.asset('images/user.png');
 
-  // void getPosts() async{
-  //   ele = [ Text("No more to show") ];
-  //   var _cloud = Firestore.instance;
-  //   await for( var snapshot in _cloud.collection('Posts').document(title).collection('UserPosts').snapshots()){
-  //     for( var docs in snapshot.documents)
-  //       setState((){
-  //         addListEle();
-  //       });
-        
-  //   }
-  //   print(ele);
-  // }
-
   void trytogetImage() async{
     try{
       StorageReference storageReference = FirebaseStorage.instance.ref()    
@@ -45,6 +32,7 @@ class _ProfileState extends State<Profile> {
     FirebaseUser user = await _auth.currentUser();
     setState(() {
       title = user.email;
+      trytogetImage();
     });
   }
   
@@ -53,7 +41,6 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     getCurrUser();
-    // getPosts();
     super.initState();    
   }
 
@@ -73,7 +60,6 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     
     trytogetImage();
-    // getPosts();
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -109,15 +95,6 @@ class _ProfileState extends State<Profile> {
               textScaleFactor: 3,
             )
           ),
-          // Expanded(
-          //   flex:7,
-          //   child: ListView.builder(
-          //     itemCount: ele.length,
-          //     itemBuilder: (BuildContext context,int index){
-          //       return Container(child: ele[index]);
-          //     }
-          //   ),
-          // ),
           Expanded(
             flex: 7,
             child: StreamBuilder(
@@ -147,10 +124,8 @@ class _ProfileState extends State<Profile> {
             onPressed: (){
               setState(() {
                 Navigator.pushNamed(context, '/UploadPost');
-                //getPosts();
                 addListEle();
               });
-              
             }
           )
         ],

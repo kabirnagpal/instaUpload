@@ -16,7 +16,7 @@ class _RegisterState extends State<Register> {
       password: password
       );
       if(a!=null){
-        Navigator.pushNamed(context, '/Login');
+        Navigator.popAndPushNamed(context, '/Login');
       }
     }
     catch(e){
@@ -31,6 +31,9 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Register"),
+      ),
       body: SafeArea(
         child: Column(
           children: <Widget>[

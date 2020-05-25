@@ -33,8 +33,8 @@ Future uploadFile() async {
        .child('Profiles/'+userEmail.split('.com')[0]+'.jpeg');    
    StorageUploadTask uploadTask = storageReference.putFile(_imageFile);    
    await uploadTask.onComplete;    
-   print('File Uploaded');        
-   Navigator.pop(context);
+   print('File Uploaded');      
+   Navigator.pushReplacementNamed(context,'/Profile');
  }  
 
 Future <void>_pickImage(ImageSource source) async{
