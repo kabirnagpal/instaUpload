@@ -13,6 +13,7 @@ class _LoginState extends State<Login> {
       AuthResult a = await _auth.signInWithEmailAndPassword(
         email: email, password: password);
         if(a!=null){
+          isLoading = false;
           Navigator.pushNamed(context, '/Profile');
         }
     }
@@ -20,38 +21,60 @@ class _LoginState extends State<Login> {
     Navigator.pop(context);}
   }
   String email,password;
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blueAccent,
       appBar: AppBar(
         title: Text("Login"),
       ),
       body: SafeArea(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            TextFormField(
-              decoration: InputDecoration(
-                helperText: 'Email'
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 20,vertical: 5),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white54,
+                  helperText: 'Email'
+                ),
+                onChanged: (value){
+                  email = (value);
+                }            
               ),
-              onChanged: (value){
-                email = (value);
-              }            
             ),
-            TextFormField(
-              obscureText: true,
-              decoration: InputDecoration(
-                helperText: 'Password'
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 20,vertical: 5),
+              child: TextFormField(
+                obscureText: true,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white54,
+                  helperText: 'Password'
+                ),
+                onChanged: (value){
+                  password = (value);
+                }            
               ),
-              onChanged: (value){
-                password = (value);
-              }            
             ),
-            FlatButton(onPressed: (){
-              setState(() {
-                verifyUser(email,password);
-              });
-            }, 
-            child: Text("Submit"))
+            if(isLoading) Center(
+              child: CircularProgressIndicator(),
+              )
+            else  FlatButton(
+              textColor: Colors.white70,
+              color: Colors.deepPurple,
+              onPressed: (){
+                setState(() {
+                  isLoading = true;
+                  verifyUser(email, password);
+                });
+              }, 
+              child: Text("Submit")
+            ), 
+
           ],
         )
       ),
