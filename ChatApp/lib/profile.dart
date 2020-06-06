@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -100,6 +102,10 @@ class _ProfileState extends State<Profile> {
               ),
             )
           ),
+          Container(
+            width: 300,
+            child: Divider()
+          ),
           Expanded(
             flex: 7,
             child: StreamBuilder(
@@ -107,12 +113,15 @@ class _ProfileState extends State<Profile> {
               builder: (context,snapshot){
                 if(snapshot.hasData){
                   return ListView.builder(
+                    reverse: true,
                     itemCount: snapshot.data.documents.length,
                     itemBuilder: (BuildContext context,int index){
-                      return Container(child: ListElements(
-                        url: snapshot.data.documents[index].data['url'].toString(),
-                        caption: snapshot.data.documents[index].data['caption'].toString(),
-                        ));
+                      return Container(
+                        child: ListElements(
+                          url: snapshot.data.documents[index].data['url'].toString(),
+                          caption: snapshot.data.documents[index].data['caption'].toString(),
+                        )
+                      );
                     }
                   );
                 }

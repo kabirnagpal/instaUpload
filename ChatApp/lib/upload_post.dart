@@ -46,78 +46,83 @@ class _UploadPostState extends State<UploadPost> {
   var _auth = FirebaseAuth.instance;
   File _imageFile;
   var _cloud = Firestore.instance;
-  
+  bool isimage = false;
   Future <void>_pickImage(ImageSource source) async{
   File selected = await ImagePicker.pickImage(source: source);
   setState(() {
     _imageFile = selected;
+    if(selected==null)
+      _clear();
+    else 
+      isimage = true;
   });
 }
 
 void _clear(){
   setState(() {
     _imageFile=null;
+    isimage = false;
   });
 }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
+      backgroundColor: Colors.blueAccent,
       appBar: AppBar(
         title: Text("Upload Image"), 
       ),
+      body: Container(
+        padding: EdgeInsets.all(32), 
+        child: ListView(
+          children: <Widget>[
+            if(_imageFile != null)...[
+            Image.file(_imageFile),
+            TextFormField(
+                      decoration: InputDecoration(
+                        helperText: 'Enter some captions'
+                        ),
+                      onChanged: (value){
+                        caption = (value);
+                        }            
+                      )
+            ]
+          ],
+        )
+      ),
       bottomNavigationBar: BottomAppBar(
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.photo_camera),
-              onPressed: () => _pickImage(ImageSource.camera),
+            if (_imageFile == null)...[
+              Expanded(
+                  child: IconButton(
+                  icon: Icon(Icons.photo_camera),
+                  onPressed: () => _pickImage(ImageSource.camera),
+                  ),
               ),
-            IconButton(
-              icon: Icon(Icons.photo_album),
-              onPressed: () => _pickImage(ImageSource.gallery),
+              Expanded(
+                  child: IconButton(
+                  icon: Icon(Icons.photo_album),
+                  onPressed: () => _pickImage(ImageSource.gallery),
+                  ),
               ),
+            ]
+            else...[
+              Expanded(
+                child: FlatButton(
+                  child: Icon(Icons.delete),
+                  onPressed: _clear,
+                ),
+              ),
+              Expanded(
+                child: FlatButton(
+                  child: Icon(Icons.file_upload),
+                  onPressed: uploadPost,
+                ),
+              ),
+            ],
           ],
         ),
-      ),
-      
-      body: ListView(
-        children: <Widget>[
-          if (_imageFile != null) ...[
-            Container(
-                padding: EdgeInsets.all(25), child: Image.file(_imageFile)),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Container(
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                    helperText: 'Enter some captions'
-                    ),
-                    onChanged: (value){
-                    caption = (value);
-                    }            
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    FlatButton(
-                      color: Colors.black,
-                      child: Icon(Icons.refresh),
-                      onPressed: _clear,
-                    ),
-                    FlatButton(
-                      color: Colors.black,
-                      child: Icon(Icons.update),
-                      onPressed: uploadPost,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ]
-        ],
       ),
     );
   }

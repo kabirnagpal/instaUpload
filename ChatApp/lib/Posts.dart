@@ -19,7 +19,7 @@ class _ListElementsState extends State<ListElements> {
           ),
           Text(
             widget.caption,
-            textScaleFactor: 2,
+            textScaleFactor: 1.5,
           ),
           SizedBox(
             height: 20,
