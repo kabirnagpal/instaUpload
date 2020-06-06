@@ -24,8 +24,9 @@ class _UploadState extends State<Upload> {
   }
 
   String userEmail;
-var _auth = FirebaseAuth.instance;
-File _imageFile;
+  var _auth = FirebaseAuth.instance;
+  File _imageFile;
+  bool isimage = false;
 
 Future uploadFile() async {    
    StorageReference storageReference = FirebaseStorage.instance    
@@ -39,60 +40,67 @@ Future uploadFile() async {
 
 Future <void>_pickImage(ImageSource source) async{
   File selected = await ImagePicker.pickImage(source: source);
+  print(selected);
   setState(() {
     _imageFile = selected;
+    if(selected==null)
+      _clear();
+    else 
+      isimage = true;
   });
 }
 
 void _clear(){
   setState(() {
     _imageFile=null;
+    isimage = false;
   });
 }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
+      backgroundColor: Colors.blueAccent,
       appBar: AppBar(
         title: Text("Upload Image"), 
       ),
+      body: Container(
+          padding: EdgeInsets.all(32), 
+          child: isimage ? Image.file(_imageFile):null
+      ),
       bottomNavigationBar: BottomAppBar(
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.photo_camera),
-              onPressed: () => _pickImage(ImageSource.camera),
+            if (_imageFile == null)...[
+              Expanded(
+                  child: IconButton(
+                  icon: Icon(Icons.photo_camera),
+                  onPressed: () => _pickImage(ImageSource.camera),
+                  ),
               ),
-            IconButton(
-              icon: Icon(Icons.photo_album),
-              onPressed: () => _pickImage(ImageSource.gallery),
+              Expanded(
+                  child: IconButton(
+                  icon: Icon(Icons.photo_album),
+                  onPressed: () => _pickImage(ImageSource.gallery),
+                  ),
               ),
-          ],
-        ),
-      ),
-      
-      body: ListView(
-        children: <Widget>[
-          if (_imageFile != null) ...[
-            Container(
-                padding: EdgeInsets.all(32), child: Image.file(_imageFile)),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                FlatButton(
-                  color: Colors.black,
-                  child: Icon(Icons.refresh),
+            ]
+            else...[
+              Expanded(
+                child: FlatButton(
+                  child: Icon(Icons.delete),
                   onPressed: _clear,
                 ),
-                FlatButton(
-                  color: Colors.black,
-                  child: Icon(Icons.update),
+              ),
+              Expanded(
+                child: FlatButton(
+                  child: Icon(Icons.file_upload),
                   onPressed: uploadFile,
                 ),
-              ],
-            ),
-          ]
-        ],
+              ),
+            ],
+          ],
+        ),
       ),
     );
   }

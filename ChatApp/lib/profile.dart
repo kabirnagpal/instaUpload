@@ -61,6 +61,7 @@ class _ProfileState extends State<Profile> {
     
     trytogetImage();
     return Scaffold(
+      backgroundColor: Colors.blueAccent,
       appBar: AppBar(
         title: Text(title),
       ),
@@ -76,14 +77,15 @@ class _ProfileState extends State<Profile> {
                   radius: 50,
                 ),
                 FlatButton(
-                  color: Colors.black12,
+                  textColor: Colors.white70,
+                  color: Colors.deepPurple,
                   onPressed: (){
                     setState(() {
                     Navigator.pushNamed(context, '/Upload');
                     trytogetImage();  
                     });
                   }, 
-                  child: Text("upload Image"),
+                  child: Text("Upload Profile Pic"),
                 ),
               ],  
             ),
@@ -93,6 +95,9 @@ class _ProfileState extends State<Profile> {
             child: Text(
               "Your Posts",
               textScaleFactor: 3,
+              style: TextStyle(
+                color: Colors.white70
+              ),
             )
           ),
           Expanded(
